@@ -26,6 +26,7 @@ function App() {
   const [input, setInput] = useState("");
   const [treeData, setTreeData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
   const [treeHistory, setTreeHistory] = useState([]);
   const [currentTreeIndex, setCurrentTreeIndex] = useState(-1);
 
@@ -55,6 +56,7 @@ function App() {
   };
 
   const fetchPrompt = async (path) => {
+    setIsGeneratingPrompt(true);
     try {
       const response = await fetch("/api/prompt", {
         method: "POST",
@@ -68,6 +70,8 @@ function App() {
     } catch (error) {
       console.error("Error fetching prompt:", error);
       return null;
+    } finally {
+      setIsGeneratingPrompt(false);
     }
   };
 
@@ -129,6 +133,7 @@ function App() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="input-field"
+          disabled={isLoading || isGeneratingPrompt}
         />
         <button
           onClick={() => fetchMindmap(input)}
