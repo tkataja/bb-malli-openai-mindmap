@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Tree from "react-d3-tree";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
   const fetchMindmap = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8080", {
+      const response = await fetch("/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,12 +32,6 @@ function App() {
     };
   };
 
-  useEffect(() => {
-    if (treeData) {
-      // You can add any additional setup here if needed
-    }
-  }, [treeData]);
-
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <input
@@ -49,7 +43,9 @@ function App() {
       <button onClick={fetchMindmap} disabled={isLoading}>
         {isLoading ? "Generating..." : "Generate"}
       </button>
-      {treeData && <Tree data={treeData} />}
+      {treeData && (
+        <Tree data={treeData} collapsible={true} enableLegacyTransitions />
+      )}
     </div>
   );
 }
