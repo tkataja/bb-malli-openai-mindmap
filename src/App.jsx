@@ -114,16 +114,21 @@ function App() {
   const NavigationButton = styled.button`
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4caf50;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     margin: 0 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: #2980b9;
+    }
 
     &:disabled {
-      background-color: #cccccc;
+      background-color: #95a5a6;
       cursor: not-allowed;
     }
   `;
@@ -134,7 +139,10 @@ function App() {
         style={{
           display: "flex",
           justifyContent: "center",
-          marginBottom: "20px",
+          margin: "20px 0",
+          padding: "10px",
+          backgroundColor: "#f0f0f0",
+          borderRadius: "5px",
         }}
       >
         <input
