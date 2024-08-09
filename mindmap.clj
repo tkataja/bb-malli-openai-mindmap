@@ -1,11 +1,11 @@
 (ns mindmap
   (:require [babashka.http-client :as http]
-            [ruuter.core :as ruuter]
             [clojure.data.json :as json]
             [malli.core :as m]
             [malli.json-schema :as json-schema]
             [malli.util :as mu]
-            [org.httpkit.server :as server]))
+            [org.httpkit.server :as server]
+            [ruuter.core :as ruuter]))
 
 ;;
 ;; Malli schemas
@@ -83,9 +83,9 @@
    :body "OK"})
 
 (def routes
-  (ruuter/router
-    [["/api" :post api-handler]
-     ["/health" :get health-handler]]))
+  (ruuter/routes
+   [["/api" :post api-handler]
+    ["/health" :get health-handler]]))
 
 (defn start-server []
   (let [server-instance (server/run-server routes {:ip "127.0.0.1" :port 8080})]
