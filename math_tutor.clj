@@ -47,4 +47,4 @@
                 :content "how can I solve 8x + 7 = -23"}]
     :response_format (json-schema-response MathResponse)}))
 
-(println (get-math-response))
+(clojure.pprint/pprint (get-math-response))
