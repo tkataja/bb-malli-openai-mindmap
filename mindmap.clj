@@ -83,12 +83,11 @@
    :body "OK"})
 
 (def routes
-  (ruuter/router
-   [["/api" :post api-handler]
-    ["/health" :get health-handler]]))
+  [{:path "/api", :method :post, :response api-handler}
+   {:path "/health", :method :get, :response health-handler}])
 
 (defn start-server []
-  (let [server-instance (server/run-server routes {:ip "127.0.0.1" :port 8080})]
+  (let [server-instance (server/run-server #(ruuter/route routes %) {:ip "127.0.0.1" :port 8080})]
     ;; Add a shutdown hook to gracefully stop the server
     (.addShutdownHook (Runtime/getRuntime)
                       (Thread. (fn []
