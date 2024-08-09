@@ -1,5 +1,5 @@
 (ns math-tutor
-  (:require [hato.client :as c]
+  (:require [babashka.curl :as curl]
             [jsonista.core :as j]
             [malli.core :as m]
             [malli.json-schema :as json-schema]
@@ -19,13 +19,14 @@
                    :strict true}}))
 
 (defn completion [data]
-  (-> (c/post "https://api.openai.com/v1/chat/completions"
-              {:headers {"Content-Type" "application/json"
-                         "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
-               :body (j/write-value-as-string data)})
-      :body
-      (<-json)
-      (<-response)))
+  (let [response (curl/post "https://api.openai.com/v1/chat/completions"
+                            {:headers {"Content-Type" "application/json"
+                                       "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
+                             :body (j/write-value-as-string data)})]
+    (-> response
+        :body
+        (<-json)
+        (<-response))))
 
 (def Step
   [:map
