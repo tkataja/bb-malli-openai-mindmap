@@ -92,7 +92,7 @@
     #jsx [:div {:className "main-container"}
           [:div {:className "input-container"}
            [:input {:type "text"
-                    :placeholder "Describe your mindmap"
+                    :placeholder "Describe your mindmap (e.g. Functional Programming)"
                     :value input
                     :onChange #(setInput (.. % -target -value))
                     :onKeyDown #(when (and (= (.-key %) "Enter")
