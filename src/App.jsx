@@ -64,7 +64,6 @@ function App() {
         body: JSON.stringify({ prompt: path }),
       });
       const data = await response.text();
-      console.log("prompt", data);
       return data.trim();
     } catch (error) {
       console.error("Error fetching prompt:", error);
@@ -106,7 +105,6 @@ function App() {
         if (path) {
           const context = path.join(" > ");
           const newPrompt = await fetchPrompt(context);
-          console.log("newPrompt", newPrompt);
           if (newPrompt) {
             setInput(newPrompt);
             fetchMindmap(newPrompt);
