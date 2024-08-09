@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import Tree from "react-d3-tree";
+import styled from "styled-components";
 
 const getPathToRoot = (treeData, targetNodeId) => {
   const traverse = (node, path = []) => {
@@ -43,6 +44,8 @@ function App() {
   const [input, setInput] = useState("");
   const [treeData, setTreeData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [treeHistory, setTreeHistory] = useState([]);
+  const [currentTreeIndex, setCurrentTreeIndex] = useState(-1);
 
   const fetchMindmap = async (content) => {
     setIsLoading(true);
@@ -55,11 +58,28 @@ function App() {
         body: JSON.stringify({ message: content }),
       });
       const data = await response.json();
-      setTreeData(transformData(data.root));
+      const newTreeData = transformData(data.root);
+      setTreeData(newTreeData);
+      setTreeHistory(prevHistory => [...prevHistory.slice(0, currentTreeIndex + 1), newTreeData]);
+      setCurrentTreeIndex(prevIndex => prevIndex + 1);
     } catch (error) {
       console.error("Error fetching mindmap:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const goBack = () => {
+    if (currentTreeIndex > 0) {
+      setCurrentTreeIndex(prevIndex => prevIndex - 1);
+      setTreeData(treeHistory[currentTreeIndex - 1]);
+    }
+  };
+
+  const goForward = () => {
+    if (currentTreeIndex < treeHistory.length - 1) {
+      setCurrentTreeIndex(prevIndex => prevIndex + 1);
+      setTreeData(treeHistory[currentTreeIndex + 1]);
     }
   };
 
@@ -85,6 +105,23 @@ function App() {
       evt.stopPropagation();
     }
   }, [treeData]);
+
+  const NavigationButton = styled.button`
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 10px;
+
+    &:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+  `;
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -124,6 +161,14 @@ function App() {
             "Generate"
           )}
         </button>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <NavigationButton onClick={goBack} disabled={currentTreeIndex <= 0}>
+          Back
+        </NavigationButton>
+        <NavigationButton onClick={goForward} disabled={currentTreeIndex >= treeHistory.length - 1}>
+          Forward
+        </NavigationButton>
       </div>
       {treeData && (
         <Tree
