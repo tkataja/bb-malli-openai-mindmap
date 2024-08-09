@@ -92,6 +92,7 @@ function App() {
   const transformData = (node) => {
     return {
       name: node.content,
+      description: node.description,
       children: node.children.map(transformData),
     };
   };
@@ -106,8 +107,9 @@ function App() {
           setInput(context);
           fetchMindmap(context);
         } else {
-          setInput(nodeData.data.name);
-          fetchMindmap(nodeData.data.name);
+          const nodeContent = nodeData.data.description || nodeData.data.name;
+          setInput(nodeContent);
+          fetchMindmap(nodeContent);
         }
         evt.stopPropagation();
       }
