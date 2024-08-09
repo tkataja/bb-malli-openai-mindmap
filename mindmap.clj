@@ -50,15 +50,18 @@
                     :throw false})]
     (-> response
         :body
-        (<-json)
-        (<-response))))
+        (<-json))))
+
+(defn completion-json [body]
+  (-> (completion body)
+      (<-response)))
 
 ;;
 ;; Mindmapping http api
 ;;
 
 (defn create-mindmap [msg]
-  (completion
+  (completion-json
    {:model "gpt-4o-2024-08-06",
     :temperature 1.0
     :max_tokens 2048
@@ -68,6 +71,17 @@
                {:role "user"
                 :content msg}]
     :response_format (json-schema-response Mindmap)}))
+
+(defn create-prompt [msg]
+  (completion
+   {:model "gpt-4o",
+    :temperature 1.0
+    :max_tokens 128
+    :stream false
+    :messages [{:role "system",
+                :content "You receive a mindmap path. Return a concise mindmap title for such a subtopic that is a good fit for the topic."},
+               {:role "user"
+                :content msg}]}))
 
 (defn mindmap-handler [req]
   (let [body (slurp (:body req))
@@ -79,11 +93,13 @@
 
 (defn prompt-handler [req]
   (let [body (slurp (:body req))
-        prompt (get (json/read-str body :key-fn keyword) :prompt)]
-    ;; Placeholder response - you can fill in the rest later
+        prompt (get (json/read-str body :key-fn keyword) :prompt)
+        _ (println "prompt" prompt)
+        prompt-response (create-prompt prompt)]
+    (println "prompt-response" prompt-response)
     {:status 200
-     :headers {"Content-Type" "application/json"}
-     :body (json/write-str {:message "Prompt received" :prompt prompt})}))
+     :headers {"Content-Type" "text/plain"}
+     :body (-> prompt-response :choices first :message :content)}))
 
 (defn health-handler [req]
   {:status 200
