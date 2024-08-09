@@ -1,23 +1,23 @@
-# React App with Vite
+# LLM mindmap generation with Malli
 
-A simple React application using Vite as the build tool.
+OpenAI JSON schema response format based mindmap generation using Malli. Also, wanted to try out babashka and squint.
+Heavy lifting done by all the awesome stuff such as Malli, babashka, OpenAI, react-d3-tree etc.
+
+## Features
+
+- Generate mindmap by writing a topic in the input box and clicking on the "Generate" button (or press Enter)
+- Double click on a node to further explore the topic (API for prompt generation based on the mindmap node path)
 
 ## Prerequisites
 
-- Node.js (14+)
-- npm (6+)
+- [babashka](https://github.com/babashka/babashka)
+- [squint](https://github.com/squint-cljs/squint)
+- [npm](https://www.npmjs.com/)
 
 ## Quick Start
 
-1. Install: `npm install`
-2. Develop: `npm run dev`
-3. Build: `npm run build`
-4. Preview: `npm run serve`
-
-## Project Structure
-
-- `src/`: React application source code
-- `index.html`: Main HTML file
-- `vite.config.js`: Vite configuration
-
-Built with React and Vite for fast development and optimized production builds.
+```
+$ pnpm i  # or npm i
+$ bb dev
+# open http://localhost:5173
+```
