@@ -54,6 +54,23 @@ function App() {
     }
   };
 
+  const fetchPrompt = async (path) => {
+    try {
+      const response = await fetch("/api/prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: path }),
+      });
+      const data = await response.text();
+      return data.trim();
+    } catch (error) {
+      console.error("Error fetching prompt:", error);
+      return null;
+    }
+  };
+
   const goBack = () => {
     if (currentTreeIndex > 0) {
       setCurrentTreeIndex((prevIndex) => prevIndex - 1);
@@ -81,14 +98,20 @@ function App() {
   };
 
   const handleNodeClick = useCallback(
-    (nodeData, evt) => {
+    async (nodeData, evt) => {
       if (evt.detail === 2) {
         // Check for double-click
         const path = getPathToRoot(treeData, nodeData.data.name);
         if (path) {
           const context = path.join(" > ");
-          setInput(context);
-          fetchMindmap(context);
+          const newPrompt = await fetchPrompt(context);
+          if (newPrompt) {
+            setInput(newPrompt);
+            fetchMindmap(newPrompt);
+          } else {
+            setInput(context);
+            fetchMindmap(context);
+          }
         } else {
           const nodeContent = nodeData.data.description || nodeData.data.name;
           setInput(nodeContent);
