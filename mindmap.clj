@@ -26,7 +26,6 @@
 ;;
 ;; OpenAI API
 ;;
-
 (defn <-json [json-str]
   (json/read-str json-str :key-fn keyword))
 
@@ -72,20 +71,12 @@
 (defn start-server []
   (let [server-instance (server/run-server
                          (fn [req]
-                           (let [uri (:uri req)]
-                             (case uri
-                               "/api" (let [body (slurp (:body req))
-                                            msg (get (json/read-str body :key-fn keyword) :message)
-                                            mindmap-response (create-mindmap msg)]
-                                        {:status 200
-                                         :headers {"Content-Type" "application/json"}
-                                         :body (json/write-str (-> mindmap-response :choices first :message :content))})
-                               "/health" {:status 200
-                                          :headers {"Content-Type" "text/plain"}
-                                          :body "OK"}
-                               {:status 404
-                                :headers {"Content-Type" "text/plain"}
-                                :body "Not Found"}))))
+                           (let [body (slurp (:body req))
+                                 msg (get (json/read-str body :key-fn keyword) :message)
+                                 mindmap-response (create-mindmap msg)]
+                             {:status 200
+                              :headers {"Content-Type" "application/json"}
+                              :body (json/write-str (-> mindmap-response :choices first :message :content))}))
                          {:ip "127.0.0.1" :port 8080})]
     ;; Add a shutdown hook to gracefully stop the server
     (.addShutdownHook (Runtime/getRuntime)
