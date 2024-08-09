@@ -16,6 +16,7 @@
 }
 
 .navigation-button {
+  width: 100px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: #3498db;
@@ -44,6 +45,7 @@
 .input-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 20px 0;
   padding: 10px;
   background-color: #f0f0f0;
@@ -75,7 +77,11 @@
 }
 
 .button-container {
+  position: absolute;
+  bottom: 64px;
+  left: 64px;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }

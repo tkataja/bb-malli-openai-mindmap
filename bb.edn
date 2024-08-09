@@ -1,5 +1,5 @@
 {:tasks
- {dev:server (shell "npx nodemon --watch mindmap.clj --exec 'bb mindmap.clj'")
+ {dev:server (shell "npx nodemon --watch server.clj --exec 'bb server.clj'")
   dev:squint (shell "npx squint watch")
   dev:vite (shell "npx vite --config=vite.config.js public")
   -dev {:depends [dev:vite dev:squint dev:server]}
