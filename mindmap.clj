@@ -69,7 +69,7 @@
                 :content msg}]
     :response_format (json-schema-response Mindmap)}))
 
-(defn api-handler [req]
+(defn mindmap-handler [req]
   (let [body (slurp (:body req))
         msg (get (json/read-str body :key-fn keyword) :message)
         mindmap-response (create-mindmap msg)]
@@ -77,13 +77,22 @@
      :headers {"Content-Type" "application/json"}
      :body (json/write-str (-> mindmap-response :choices first :message :content))}))
 
+(defn prompt-handler [req]
+  (let [body (slurp (:body req))
+        prompt (get (json/read-str body :key-fn keyword) :prompt)]
+    ;; Placeholder response - you can fill in the rest later
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body (json/write-str {:message "Prompt received" :prompt prompt})}))
+
 (defn health-handler [req]
   {:status 200
    :headers {"Content-Type" "text/plain"}
    :body "OK"})
 
 (def routes
-  [{:path "/api", :method :post, :response api-handler}
+  [{:path "/api/mindmap", :method :post, :response mindmap-handler}
+   {:path "/api/prompt", :method :post, :response prompt-handler}
    {:path "/health", :method :get, :response health-handler}])
 
 (defn start-server []
