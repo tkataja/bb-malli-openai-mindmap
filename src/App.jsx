@@ -1,18 +1,21 @@
 import React, { useCallback, useState, useEffect } from "react";
 import Tree from "react-d3-tree";
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 `;
 
-const RotatingSpinner = styled.span`
+const PulsatingSpinner = styled.span`
   display: inline-block;
-  animation: ${rotate} 2s linear infinite;
+  animation: ${pulse} 1s ease-in-out infinite;
 `;
 
 const SpinnerEmoji = () => {
@@ -30,7 +33,7 @@ const SpinnerEmoji = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <RotatingSpinner>{emoji}</RotatingSpinner>;
+  return <PulsatingSpinner>{emoji}</PulsatingSpinner>;
 };
 import styled, { keyframes } from "styled-components";
 
