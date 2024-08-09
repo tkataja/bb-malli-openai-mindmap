@@ -32,7 +32,7 @@ function App() {
   const fetchMindmap = async (content) => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api", {
+      const response = await fetch("/api/mindmap", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
