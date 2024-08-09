@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import Tree from "react-d3-tree";
 import styled from "styled-components";
 
@@ -38,7 +38,6 @@ const SpinnerEmoji = () => {
   const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
   return <PulsatingSpinner>{randomEmoji}</PulsatingSpinner>;
 };
-import styled, { keyframes } from "styled-components";
 
 function App() {
   const [input, setInput] = useState("");
@@ -60,8 +59,11 @@ function App() {
       const data = await response.json();
       const newTreeData = transformData(data.root);
       setTreeData(newTreeData);
-      setTreeHistory(prevHistory => [...prevHistory.slice(0, currentTreeIndex + 1), newTreeData]);
-      setCurrentTreeIndex(prevIndex => prevIndex + 1);
+      setTreeHistory((prevHistory) => [
+        ...prevHistory.slice(0, currentTreeIndex + 1),
+        newTreeData,
+      ]);
+      setCurrentTreeIndex((prevIndex) => prevIndex + 1);
     } catch (error) {
       console.error("Error fetching mindmap:", error);
     } finally {
@@ -71,14 +73,14 @@ function App() {
 
   const goBack = () => {
     if (currentTreeIndex > 0) {
-      setCurrentTreeIndex(prevIndex => prevIndex - 1);
+      setCurrentTreeIndex((prevIndex) => prevIndex - 1);
       setTreeData(treeHistory[currentTreeIndex - 1]);
     }
   };
 
   const goForward = () => {
     if (currentTreeIndex < treeHistory.length - 1) {
-      setCurrentTreeIndex(prevIndex => prevIndex + 1);
+      setCurrentTreeIndex((prevIndex) => prevIndex + 1);
       setTreeData(treeHistory[currentTreeIndex + 1]);
     }
   };
@@ -90,26 +92,29 @@ function App() {
     };
   };
 
-  const handleNodeClick = useCallback((nodeData, evt) => {
-    if (evt.detail === 2) {
-      // Check for double-click
-      const path = getPathToRoot(treeData, nodeData.data.name);
-      if (path) {
-        const context = path.join(" > ");
-        setInput(context);
-        fetchMindmap(context);
-      } else {
-        setInput(nodeData.data.name);
-        fetchMindmap(nodeData.data.name);
+  const handleNodeClick = useCallback(
+    (nodeData, evt) => {
+      if (evt.detail === 2) {
+        // Check for double-click
+        const path = getPathToRoot(treeData, nodeData.data.name);
+        if (path) {
+          const context = path.join(" > ");
+          setInput(context);
+          fetchMindmap(context);
+        } else {
+          setInput(nodeData.data.name);
+          fetchMindmap(nodeData.data.name);
+        }
+        evt.stopPropagation();
       }
-      evt.stopPropagation();
-    }
-  }, [treeData]);
+    },
+    [treeData]
+  );
 
   const NavigationButton = styled.button`
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -125,32 +130,38 @@ function App() {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "20px",
+        }}
+      >
         <input
           type="text"
           placeholder="Describe your mindmap"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           style={{
-            width: '70%',
-            padding: '10px',
-            fontSize: '16px',
-            borderRadius: '5px 0 0 5px',
-            border: '1px solid #ccc',
+            width: "70%",
+            padding: "10px",
+            fontSize: "16px",
+            borderRadius: "5px 0 0 5px",
+            border: "1px solid #ccc",
           }}
         />
-        <button 
-          onClick={() => fetchMindmap(input)} 
+        <button
+          onClick={() => fetchMindmap(input)}
           disabled={isLoading}
           style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-            backgroundColor: isLoading ? '#cccccc' : '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0 5px 5px 0',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            transition: 'background-color 0.3s',
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: isLoading ? "#cccccc" : "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "0 5px 5px 0",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            transition: "background-color 0.3s",
           }}
         >
           {isLoading ? (
@@ -162,11 +173,20 @@ function App() {
           )}
         </button>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "20px",
+        }}
+      >
         <NavigationButton onClick={goBack} disabled={currentTreeIndex <= 0}>
           Back
         </NavigationButton>
-        <NavigationButton onClick={goForward} disabled={currentTreeIndex >= treeHistory.length - 1}>
+        <NavigationButton
+          onClick={goForward}
+          disabled={currentTreeIndex >= treeHistory.length - 1}
+        >
           Forward
         </NavigationButton>
       </div>
