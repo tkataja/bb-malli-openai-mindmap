@@ -79,7 +79,7 @@
     :max_tokens 128
     :stream false
     :messages [{:role "system",
-                :content "You receive a mindmap path. Return a concise mindmap title for such a subtopic that is a good fit for the topic."},
+                :content "You receive a mindmap path. Return a concise mindmap title for further subtopic exploration."},
                {:role "user"
                 :content msg}]}))
 
@@ -99,15 +99,14 @@
      :headers {"Content-Type" "text/plain"}
      :body (-> prompt-response :choices first :message :content)}))
 
-(defn health-handler [req]
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "OK"})
 
 (def routes
-  [{:path "/api/mindmap", :method :post, :response mindmap-handler}
-   {:path "/api/prompt", :method :post, :response prompt-handler}
-   {:path "/health", :method :get, :response health-handler}])
+  [{:path "/api/mindmap"
+    :method :post
+    :response mindmap-handler}
+   {:path "/api/prompt"
+    :method :post
+    :response prompt-handler}])
 
 (defn start-server []
   (let [server-instance (server/run-server #(ruuter/route routes %) {:ip "127.0.0.1" :port 8080})]
