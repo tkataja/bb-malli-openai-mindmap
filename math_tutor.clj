@@ -1,12 +1,12 @@
 (ns math-tutor
   (:require [babashka.curl :as curl]
-            [jsonista.core :as j]
+            [clojure.data.json :as json]
             [malli.core :as m]
             [malli.json-schema :as json-schema]
             [malli.util :as mu]))
 
-(defn <-json [x]
-  (j/read-value x j/keyword-keys-object-mapper))
+(defn <-json [json-str]
+  (json/read-str json-str :key-fn keyword))
 
 (defn <-response [response]
   (update response :choices (partial mapv #(update-in % [:message :content] <-json))))
@@ -22,7 +22,7 @@
   (let [response (curl/post "https://api.openai.com/v1/chat/completions"
                             {:headers {"Content-Type" "application/json"
                                        "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
-                             :body (j/write-value-as-string data)})]
+                             :body (json/write-str data)})]
     (-> response
         :body
         (<-json)
