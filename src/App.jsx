@@ -1,5 +1,38 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import Tree from "react-d3-tree";
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const RotatingSpinner = styled.span`
+  display: inline-block;
+  animation: ${rotate} 2s linear infinite;
+`;
+
+const SpinnerEmoji = () => {
+  const [emoji, setEmoji] = useState("🧠");
+  const emojis = ["🧠", "💡", "🌳", "🔄"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEmoji((prevEmoji) => {
+        const currentIndex = emojis.indexOf(prevEmoji);
+        return emojis[(currentIndex + 1) % emojis.length];
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <RotatingSpinner>{emoji}</RotatingSpinner>;
+};
+import styled, { keyframes } from "styled-components";
 
 function App() {
   const [input, setInput] = useState("");
@@ -49,7 +82,13 @@ function App() {
         onChange={(e) => setInput(e.target.value)}
       />
       <button onClick={() => fetchMindmap(input)} disabled={isLoading}>
-        {isLoading ? "Generating..." : "Generate"}
+        {isLoading ? (
+          <>
+            Generating... <SpinnerEmoji />
+          </>
+        ) : (
+          "Generate"
+        )}
       </button>
       {treeData && (
         <Tree
