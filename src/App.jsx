@@ -76,7 +76,7 @@ function App() {
       setCurrentTreeIndex((prevIndex) => prevIndex - 1);
       const previousTree = treeHistory[currentTreeIndex - 1];
       setTreeData(previousTree);
-      setInput(previousTree.name);
+      setInput(previousTree.description || previousTree.name);
     }
   };
 
@@ -85,7 +85,7 @@ function App() {
       setCurrentTreeIndex((prevIndex) => prevIndex + 1);
       const nextTree = treeHistory[currentTreeIndex + 1];
       setTreeData(nextTree);
-      setInput(nextTree.name);
+      setInput(nextTree.description || nextTree.name);
     }
   };
 
