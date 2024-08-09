@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import Tree from "react-d3-tree";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const getPathToRoot = (treeData, targetNodeId) => {
   const traverse = (node, path = []) => {
