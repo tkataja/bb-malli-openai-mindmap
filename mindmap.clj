@@ -40,12 +40,13 @@
                    :strict true}}))
 
 (defn completion [data]
-  (let [response (http/post "https://api.openai.com/v1/chat/completions"
-                            {:headers {"Content-Type" "application/json"
-                                       "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
-                             :body (json/write-str data)
-                             :timeout 60000
-                             :throw false})]
+  (let [response
+        (http/post "https://api.openai.com/v1/chat/completions"
+                   {:headers {"Content-Type" "application/json"
+                              "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
+                    :body (json/write-str data)
+                    :timeout 60000
+                    :throw false})]
     (-> response
         :body
         (<-json)
@@ -62,7 +63,7 @@
     :max_tokens 2048
     :stream false
     :messages [{:role "system",
-                :content "You are a helpful brainstorming assistant who creates mind maps"},
+                :content "You are a helpful brainstorming assistant who creates mind maps. Keep descriptions short and concise."},
                {:role "user"
                 :content msg}]
     :response_format (json-schema-response Mindmap)}))
