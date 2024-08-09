@@ -95,6 +95,11 @@
                     :placeholder "Describe your mindmap"
                     :value input
                     :onChange #(setInput (.. % -target -value))
+                    :onKeyDown #(when (and (= (.-key %) "Enter")
+                                           (not (str/blank? input))
+                                           (not isLoading)
+                                           (not isGeneratingPrompt))
+                                  (fetch-mindmap input))
                     :className "input-field"
                     :disabled (or isLoading isGeneratingPrompt)}]
            [:button {:onClick #(fetch-mindmap input)
