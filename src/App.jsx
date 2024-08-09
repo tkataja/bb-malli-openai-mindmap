@@ -74,14 +74,18 @@ function App() {
   const goBack = () => {
     if (currentTreeIndex > 0) {
       setCurrentTreeIndex((prevIndex) => prevIndex - 1);
-      setTreeData(treeHistory[currentTreeIndex - 1]);
+      const previousTree = treeHistory[currentTreeIndex - 1];
+      setTreeData(previousTree);
+      setInput(previousTree.name);
     }
   };
 
   const goForward = () => {
     if (currentTreeIndex < treeHistory.length - 1) {
       setCurrentTreeIndex((prevIndex) => prevIndex + 1);
-      setTreeData(treeHistory[currentTreeIndex + 1]);
+      const nextTree = treeHistory[currentTreeIndex + 1];
+      setTreeData(nextTree);
+      setInput(nextTree.name);
     }
   };
 
