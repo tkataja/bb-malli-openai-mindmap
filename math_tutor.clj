@@ -1,5 +1,5 @@
 (ns math-tutor
-  (:require [babashka.curl :as curl]
+  (:require [babashka.http-client :as http]
             [clojure.data.json :as json]
             [malli.core :as m]
             [malli.json-schema :as json-schema]
@@ -19,7 +19,7 @@
                    :strict true}}))
 
 (defn completion [data]
-  (let [response (curl/post "https://api.openai.com/v1/chat/completions"
+  (let [response (http/post "https://api.openai.com/v1/chat/completions"
                             {:headers {"Content-Type" "application/json"
                                        "Authorization" (str "Bearer " (System/getenv "OPENAI_API_KEY"))}
                              :body (json/write-str data)})]
