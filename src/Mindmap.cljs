@@ -1,6 +1,7 @@
 (ns Mindmap
   (:require ["react" :as react]
-            ["react-d3-tree" :refer [Tree]]))
+            ["react-d3-tree" :refer [Tree]]
+            [clojure.string :as str]))
 
 (def spinner-emojis ["🧠" "💡" "🔄"])
 
@@ -97,7 +98,7 @@
                     :className "input-field"
                     :disabled (or isLoading isGeneratingPrompt)}]
            [:button {:onClick #(fetch-mindmap input)
-                     :disabled isLoading
+                     :disabled (or isLoading (str/blank? input))
                      :className "generate-button"}
             (if isLoading
               #jsx [:span "Generating... " [SpinnerEmoji {:key (js/Date.now)}]]
