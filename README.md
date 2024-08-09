@@ -6,6 +6,8 @@ Also, shoutout to [aider](https://github.com/paul-gauthier/aider) which was help
 
 ## Features
 
+![Screen Recording 2024-08-09 at 15 27 00](https://github.com/user-attachments/assets/c9e8d78d-88fb-4659-936e-e7bbf1fbbec8)
+
 - Generate mindmap by writing a topic in the input box and clicking on the "Generate" button (or press Enter)
 - Double click on a node to further explore the topic (API for prompt generation based on the mindmap node path)
 
