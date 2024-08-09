@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import Tree from "react-d3-tree";
-import styled, { keyframes } from "styled-components";
+import "./App.css";
 
 const getPathToRoot = (treeData, targetNodeId) => {
   const traverse = (node, path = []) => {
@@ -16,27 +16,11 @@ const getPathToRoot = (treeData, targetNodeId) => {
   return traverse(treeData);
 };
 
-const pulse = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-`;
-
-const PulsatingSpinner = styled.span`
-  display: inline-block;
-  animation: ${pulse} 1s ease-in-out infinite;
-`;
 
 const SpinnerEmoji = () => {
   const emojis = ["🧠", "💡", "🌳", "🔄"];
   const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-  return <PulsatingSpinner>{randomEmoji}</PulsatingSpinner>;
+  return <span className="pulsating-spinner">{randomEmoji}</span>;
 };
 
 function App() {
@@ -117,27 +101,6 @@ function App() {
     [treeData]
   );
 
-  const NavigationButton = styled.button`
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 0 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-
-    &:hover {
-      background-color: #2980b9;
-    }
-
-    &:disabled {
-      background-color: #95a5a6;
-      cursor: not-allowed;
-    }
-  `;
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -194,10 +157,11 @@ function App() {
           marginBottom: "20px",
         }}
       >
-        <NavigationButton onClick={goBack} disabled={currentTreeIndex <= 0}>
+        <button className="navigation-button" onClick={goBack} disabled={currentTreeIndex <= 0}>
           Back
-        </NavigationButton>
-        <NavigationButton
+        </button>
+        <button
+          className="navigation-button"
           onClick={goForward}
           disabled={currentTreeIndex >= treeHistory.length - 1}
         >
