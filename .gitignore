@@ -1,0 +1,6 @@
+node_modules
+public/js
+.aider*
+.lsp
+.clj-kondo
+.calva
