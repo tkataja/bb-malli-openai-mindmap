@@ -16,7 +16,6 @@ const getPathToRoot = (treeData, targetNodeId) => {
   return traverse(treeData);
 };
 
-
 const SpinnerEmoji = () => {
   const emojis = ["🧠", "💡", "🌳", "🔄"];
   const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -101,7 +100,6 @@ function App() {
     [treeData]
   );
 
-
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <div
@@ -157,7 +155,11 @@ function App() {
           marginBottom: "20px",
         }}
       >
-        <button className="navigation-button" onClick={goBack} disabled={currentTreeIndex <= 0}>
+        <button
+          className="navigation-button"
+          onClick={goBack}
+          disabled={currentTreeIndex <= 0}
+        >
           Back
         </button>
         <button
@@ -166,7 +168,7 @@ function App() {
           disabled={currentTreeIndex >= treeHistory.length - 1}
         >
           Forward
-        </NavigationButton>
+        </button>
       </div>
       {treeData && (
         <Tree
