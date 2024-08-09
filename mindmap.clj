@@ -1,5 +1,6 @@
 (ns mindmap
   (:require [babashka.http-client :as http]
+            [ruuter.core :as ruuter]
             [clojure.data.json :as json]
             [malli.core :as m]
             [malli.json-schema :as json-schema]
@@ -68,16 +69,26 @@
                 :content msg}]
     :response_format (json-schema-response Mindmap)}))
 
+(defn api-handler [req]
+  (let [body (slurp (:body req))
+        msg (get (json/read-str body :key-fn keyword) :message)
+        mindmap-response (create-mindmap msg)]
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body (json/write-str (-> mindmap-response :choices first :message :content))}))
+
+(defn health-handler [req]
+  {:status 200
+   :headers {"Content-Type" "text/plain"}
+   :body "OK"})
+
+(def routes
+  (ruuter/router
+    [["/api" :post api-handler]
+     ["/health" :get health-handler]]))
+
 (defn start-server []
-  (let [server-instance (server/run-server
-                         (fn [req]
-                           (let [body (slurp (:body req))
-                                 msg (get (json/read-str body :key-fn keyword) :message)
-                                 mindmap-response (create-mindmap msg)]
-                             {:status 200
-                              :headers {"Content-Type" "application/json"}
-                              :body (json/write-str (-> mindmap-response :choices first :message :content))}))
-                         {:ip "127.0.0.1" :port 8080})]
+  (let [server-instance (server/run-server routes {:ip "127.0.0.1" :port 8080})]
     ;; Add a shutdown hook to gracefully stop the server
     (.addShutdownHook (Runtime/getRuntime)
                       (Thread. (fn []
