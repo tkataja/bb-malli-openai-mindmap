@@ -19,6 +19,7 @@ Also, shoutout to [aider](https://github.com/paul-gauthier/aider) which was help
 
 ```
 $ pnpm i  # or npm i
+$ export OPENAI_API_KEY=<your-openai-api-key>
 $ bb dev
 # open http://localhost:5173
 ```
