@@ -19,21 +19,9 @@ const PulsatingSpinner = styled.span`
 `;
 
 const SpinnerEmoji = () => {
-  const [emoji, setEmoji] = useState("🧠");
   const emojis = ["🧠", "💡", "🌳", "🔄"];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEmoji((prevEmoji) => {
-        const currentIndex = emojis.indexOf(prevEmoji);
-        return emojis[(currentIndex + 1) % emojis.length];
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return <PulsatingSpinner>{emoji}</PulsatingSpinner>;
+  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+  return <PulsatingSpinner>{randomEmoji}</PulsatingSpinner>;
 };
 import styled, { keyframes } from "styled-components";
 
@@ -87,7 +75,7 @@ function App() {
       <button onClick={() => fetchMindmap(input)} disabled={isLoading}>
         {isLoading ? (
           <>
-            Generating... <SpinnerEmoji />
+            Generating... <SpinnerEmoji key={Date.now()} />
           </>
         ) : (
           "Generate"
