@@ -1,7 +1,8 @@
 # LLM mindmap generation with Malli
 
-OpenAI JSON schema response format based mindmap generation using Malli. Also, wanted to try out babashka and squint.
-Heavy lifting done by all the awesome stuff such as Malli, babashka, OpenAI, react-d3-tree etc.
+OpenAI JSON schema response format based mindmap generation using Malli. Also, wanted to try out babashka and squint. Heavy lifting done by all the awesome stuff such as Malli, babashka, OpenAI, react-d3-tree etc.
+
+Also, shoutout to [aider](https://github.com/paul-gauthier/aider) which was helpful on translating the initial JS React proto to squint and various other things.
 
 ## Features
 
