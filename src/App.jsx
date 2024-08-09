@@ -17,7 +17,7 @@ const getPathToRoot = (treeData, targetNodeId) => {
 };
 
 const SpinnerEmoji = () => {
-  const emojis = ["🧠", "💡", "🌳", "🔄"];
+  const emojis = ["🧠", "💡", "🔄"];
   const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
   return <span className="pulsating-spinner">{randomEmoji}</span>;
 };
