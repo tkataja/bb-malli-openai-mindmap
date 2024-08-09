@@ -47,6 +47,7 @@
 
         fetch-prompt (fn [path]
                        (setIsGeneratingPrompt true)
+                       (setInput "Generating prompt...")
                        (-> (js/fetch "/api/prompt"
                                      #js {:method "POST"
                                           :headers #js {"Content-Type" "application/json"}
