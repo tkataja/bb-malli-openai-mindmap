@@ -1,5 +1,5 @@
 {
-  "name": "simple-react-app",
+  "name": "bb-malli-openai-mindmap",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",

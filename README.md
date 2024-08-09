@@ -19,7 +19,7 @@ Also, shoutout to [aider](https://github.com/paul-gauthier/aider) which was help
 
 ## Quick Start
 
-```
+```sh
 $ pnpm i  # or npm i
 $ export OPENAI_API_KEY=<your-openai-api-key>
 $ bb dev
