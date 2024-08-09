@@ -111,13 +111,10 @@ function App() {
             setInput(newPrompt);
             fetchMindmap(newPrompt);
           } else {
-            setInput(context);
-            fetchMindmap(context);
+            console.error("Failed to fetch new prompt");
           }
         } else {
-          const nodeContent = nodeData.data.description || nodeData.data.name;
-          setInput(nodeContent);
-          fetchMindmap(nodeContent);
+          console.error("Failed to get path to root");
         }
         evt.stopPropagation();
       }
