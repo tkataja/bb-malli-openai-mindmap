@@ -83,7 +83,7 @@
    :body "OK"})
 
 (def routes
-  (ruuter/routes
+  (ruuter/router
    [["/api" :post api-handler]
     ["/health" :get health-handler]]))
 
