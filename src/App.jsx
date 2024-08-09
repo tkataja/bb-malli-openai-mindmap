@@ -88,21 +88,43 @@ function App() {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <input
-        type="text"
-        placeholder="Describe your mindmap"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button onClick={() => fetchMindmap(input)} disabled={isLoading}>
-        {isLoading ? (
-          <>
-            Generating... <SpinnerEmoji key={Date.now()} />
-          </>
-        ) : (
-          "Generate"
-        )}
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <input
+          type="text"
+          placeholder="Describe your mindmap"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          style={{
+            width: '70%',
+            padding: '10px',
+            fontSize: '16px',
+            borderRadius: '5px 0 0 5px',
+            border: '1px solid #ccc',
+          }}
+        />
+        <button 
+          onClick={() => fetchMindmap(input)} 
+          disabled={isLoading}
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: isLoading ? '#cccccc' : '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0 5px 5px 0',
+            cursor: isLoading ? 'not-allowed' : 'pointer',
+            transition: 'background-color 0.3s',
+          }}
+        >
+          {isLoading ? (
+            <>
+              Generating... <SpinnerEmoji key={Date.now()} />
+            </>
+          ) : (
+            "Generate"
+          )}
+        </button>
+      </div>
       {treeData && (
         <Tree
           data={treeData}
