@@ -59,6 +59,7 @@ function App() {
   const handleNodeClick = useCallback((nodeData, evt) => {
     if (evt.detail === 2) {
       // Check for double-click
+      setInput(nodeData.data.name);
       fetchMindmap(nodeData.data.name);
       evt.stopPropagation();
     }
