@@ -1,6 +1,20 @@
 import React, { useCallback, useState, useEffect } from "react";
 import Tree from "react-d3-tree";
 
+const getPathToRoot = (treeData, targetNodeId) => {
+  const traverse = (node, path = []) => {
+    if (node.name === targetNodeId) {
+      return [...path, node.name];
+    }
+    for (const child of node.children || []) {
+      const result = traverse(child, [...path, node.name]);
+      if (result) return result;
+    }
+    return null;
+  };
+  return traverse(treeData);
+};
+
 const pulse = keyframes`
   0% {
     transform: scale(1);
@@ -59,11 +73,18 @@ function App() {
   const handleNodeClick = useCallback((nodeData, evt) => {
     if (evt.detail === 2) {
       // Check for double-click
-      setInput(nodeData.data.name);
-      fetchMindmap(nodeData.data.name);
+      const path = getPathToRoot(treeData, nodeData.data.name);
+      if (path) {
+        const context = path.join(" > ");
+        setInput(context);
+        fetchMindmap(context);
+      } else {
+        setInput(nodeData.data.name);
+        fetchMindmap(nodeData.data.name);
+      }
       evt.stopPropagation();
     }
-  }, []);
+  }, [treeData]);
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
